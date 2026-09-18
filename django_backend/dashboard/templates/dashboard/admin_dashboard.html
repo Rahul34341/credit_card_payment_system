@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <title>Payment Admin Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+        }
+
+        .date {
+            margin-bottom: 25px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        .summary-card h3 {
+            margin-top: 0;
+        }
+
+        .summary-card p {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #333;
+            color: white;
+        }
+
+        .SUCCESS {
+            font-weight: bold;
+        }
+
+        .FAILED {
+            font-weight: bold;
+        }
+
+        .PENDING {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Daily Payment Summary</h1>
+
+    <div class="date">
+        Date: {{ today }}
+    </div>
+
+    <div class="cards">
+
+        <div class="summary-card">
+            <h3>Total Transactions</h3>
+            <p>{{ total_transactions }}</p>
+        </div>
+
+        <div class="summary-card">
+            <h3>Total Attempted Amount</h3>
+            <p>₹{{ total_amount|floatformat:2 }}</p>
+        </div>
+
+        <div class="summary-card">
+            <h3>Successful Payments</h3>
+            <p>{{ successful_count }}</p>
+        </div>
+
+        <div class="summary-card">
+            <h3>Successful Amount</h3>
+            <p>₹{{ successful_amount|floatformat:2 }}</p>
+        </div>
+
+        <div class="summary-card">
+            <h3>Failed</h3>
+            <p>{{ failed_count }}</p>
+        </div>
+
+        <div class="summary-card">
+            <h3>Pending</h3>
+            <p>{{ pending_count }}</p>
+        </div>
+
+    </div>
+
+    <h2>Today's Transactions</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Card ID</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for transaction in transactions %}
+
+            <tr>
+                <td>{{ transaction.id }}</td>
+                <td>{{ transaction.user.username }}</td>
+                <td>{{ transaction.card_id }}</td>
+                <td>₹{{ transaction.amount }}</td>
+
+                <td class="{{ transaction.status }}">
+                    {{ transaction.status }}
+                </td>
+
+                <td>
+                    {{ transaction.created_at }}
+                </td>
+            </tr>
+
+        {% empty %}
+
+            <tr>
+                <td colspan="6">
+                    No transactions found for today.
+                </td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

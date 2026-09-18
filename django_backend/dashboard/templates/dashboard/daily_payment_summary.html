@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daily Payment Summary</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f5f5f5;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+        }
+
+        .cards {
+            display: flex;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            min-width: 180px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #eee;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Daily Payment Summary</h1>
+
+<p>Date: {{ today }}</p>
+
+<div class="cards">
+
+    <div class="card">
+        <strong>Total Transactions</strong>
+        <h2>{{ total_transactions }}</h2>
+    </div>
+
+    <div class="card">
+        <strong>Total Amount</strong>
+        <h2>₹{{ total_amount }}</h2>
+    </div>
+
+    <div class="card">
+        <strong>Successful Payments</strong>
+        <h2>{{ success_count }}</h2>
+    </div>
+
+    <div class="card">
+        <strong>Successful Amount</strong>
+        <h2>₹{{ successful_amount }}</h2>
+    </div>
+
+    <div class="card">
+        <strong>Failed</strong>
+        <h2>{{ failed_count }}</h2>
+    </div>
+
+    <div class="card">
+        <strong>Pending</strong>
+        <h2>{{ pending_count }}</h2>
+    </div>
+
+</div>
+
+<h2>Today's Transactions</h2>
+
+<table>
+
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Card ID</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Created At</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {% for transaction in transactions %}
+
+        <tr>
+            <td>{{ transaction.id }}</td>
+            <td>{{ transaction.user.username }}</td>
+            <td>{{ transaction.card_id }}</td>
+            <td>₹{{ transaction.amount }}</td>
+            <td>{{ transaction.status }}</td>
+            <td>{{ transaction.created_at }}</td>
+        </tr>
+
+    {% empty %}
+
+        <tr>
+            <td colspan="6">
+                No transactions found for today.
+            </td>
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+<p>
+    <a href="/admin/">Back to Django Admin</a>
+</p>
+
+</body>
+</html>
